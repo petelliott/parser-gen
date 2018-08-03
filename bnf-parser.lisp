@@ -1,6 +1,7 @@
 (defpackage :bnf-parser
   (:use :cl)
-  (:export))
+  (:export
+    #:syntax))
 
 (in-package :bnf-parser)
 
@@ -85,3 +86,46 @@
       (text2)
       (comb:lit #\'))))
 
+(comb:defcomb text1 ()
+  (comb:any
+    (comb:seq
+      (character1)
+      (text1))
+    (comb:cnull)))
+
+(comb:defcomb text2 ()
+  (comb:any
+    (comb:seq
+      (character2)
+      (text2))
+    (comb:cnull)))
+
+(comb:defcomb bcharacter ()
+  (comb:any
+    (misc:alpha)
+    (misc:digit)
+    (misc:sym)
+    (comb:lit #\ )))
+
+(comb:defcomb character1 ()
+  (comb:any
+    (bcharacter)
+    (comb:lit #\')))
+
+(comb:defcomb character2 ()
+  (comb:any
+    (bcharacter)
+    (comb:lit #\")))
+
+(comb:defcomb rule-name ()
+  (comb:any
+    (comb:seq
+      (rule-name)
+      (rule-char))
+    (misc:alpha)))
+
+(comb:defcomb rule-char ()
+  (comb:any
+    (misc:alpha)
+    (misc:digit)
+    (comb:lit #\-)))

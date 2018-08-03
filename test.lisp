@@ -2,6 +2,7 @@
 (load "input")
 (load "util")
 (load "misc")
+(load "bnf-parser")
 
 
 (defun test-parse (comb str)
