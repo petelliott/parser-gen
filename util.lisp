@@ -29,11 +29,14 @@
     (comb:any
       (comb:seq
         parser
-        (rep parser))
+        (rep+ parser))
       parser)))
 
 
 (comb:defcomb rep* (parser)
-  (comb:any
-    (rep+ parser)
-    (comb:cnull)))
+  (linearize
+    (comb:any
+      (comb:seq
+        parser
+        (rep* parser))
+      (comb:cnull))))

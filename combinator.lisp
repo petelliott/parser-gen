@@ -27,10 +27,10 @@
 
 (defun any-int (combs next save revert)
   (if combs
-    (multiple-value-bind (res stat)
+    (multiple-value-bind (res stat ign)
         (funcall (car combs) next save revert)
       (if stat
-        (values res t)
+        (values res t ign)
         (any-int (cdr combs) next save revert)))
     (values nil nil)))
 
@@ -93,17 +93,18 @@
 
 
 (defun cnull ()
-  (lambda (next save revert)
-    (values nil t)))
+  (cignore
+    (lambda (next save revert)
+      (values nil t))))
 
 
 (defun capply (fun combinator)
   (lambda (next save revert)
-    (multiple-value-bind (res stat)
+    (multiple-value-bind (res stat ign)
         (funcall combinator next save revert)
       (if stat
-        (values (funcall fun res) t)
-        (values res nil)))))
+        (values (funcall fun res) t ign)
+        (values res nil ign)))))
 
 
 (defun cignore (comb)

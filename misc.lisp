@@ -33,7 +33,7 @@
 
 (comb:defcomb identifier ()
   (util:strparser
-    (util:rep
+    (util:rep+
       (alphanum))))
 
 
@@ -80,7 +80,7 @@
    (comb:lit #\{)
    (comb:lit #\|)
    (comb:lit #\})
-   (comb:lit #\~)
+   (comb:lit #\~)))
 
 
 (comb:defcomb alphanum ()
