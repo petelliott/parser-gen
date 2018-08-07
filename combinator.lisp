@@ -80,9 +80,8 @@
 
 
 (defun cnull ()
-  (cignore
     (lambda (next save revert)
-      (values nil t))))
+      (values nil t)))
 
 
 (defun capply (fun combinator)
