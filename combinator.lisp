@@ -6,9 +6,7 @@
     #:seq
     #:seql
     #:lit
-    #:lit-
     #:capply
-    #:cignore
     #:defcomb
     #:c-all
     #:cnull))
@@ -27,10 +25,10 @@
 
 (defun any-int (combs next save revert)
   (if combs
-    (multiple-value-bind (res stat ign)
+    (multiple-value-bind (res stat)
         (funcall (car combs) next save revert)
       (if stat
-        (values res t ign)
+        (values res t)
         (any-int (cdr combs) next save revert)))
     (values nil nil)))
 
@@ -53,14 +51,12 @@
 
 (defun seq-int (combs next save revert)
   (if combs
-    (multiple-value-bind (res stat ign)
+    (multiple-value-bind (res stat)
         (funcall (car combs) next save revert)
       (if stat
-        (multiple-value-bind (resn statn ignn)
+        (multiple-value-bind (resn statn)
             (seq-int (cdr combs) next save revert)
-          (if ign
-            (values resn statn)
-            (values (cons res resn) statn)))
+            (values (cons res resn) statn))
         (values nil nil)))
     (values nil t)))
 
@@ -73,15 +69,6 @@
         (progn
           (funcall revert backup)
           (values nil nil))))))
-
-(defun lit- (ch)
-  (lambda (next save revert)
-    (let ((backup (funcall save)) (realchar (funcall next)))
-      (if (equal ch realchar)
-        (progn
-          (funcall revert backup)
-          (values ch nil))
-        (values realchar t)))))
 
 
 (defun c-all ()
@@ -105,13 +92,6 @@
       (if stat
         (values (funcall fun res) t ign)
         (values res nil ign)))))
-
-
-(defun cignore (comb)
-  (lambda (next save revert)
-    (multiple-value-bind (res stat)
-        (funcall comb next save revert)
-      (values nil stat t))))
 
 
 ;; TODO: docstring

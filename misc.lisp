@@ -14,15 +14,6 @@
 (in-package :misc)
 
 
-(comb:defcomb str-lit (&optional (delim #\"))
-  (comb:seq
-    (comb:lit delim)
-    (util:strparser
-      (util:rep*
-      (comb:lit- delim)))
-    (comb:lit delim)))
-
-
 (comb:defcomb strseq (str)
   (util:strparser
     (comb:seql
@@ -38,13 +29,12 @@
 
 
 (comb:defcomb wspace ()
-  (comb:cignore
-    (util:rep*
-      (comb:any
-        (comb:lit #\ )
-        (comb:lit #\return)
-        (comb:lit #\linefeed)
-        (comb:lit #\tab)))))
+  (util:rep*
+    (comb:any
+      (comb:lit #\ )
+      (comb:lit #\return)
+      (comb:lit #\linefeed)
+      (comb:lit #\tab))))
 
 
 (comb:defcomb sym ()
