@@ -120,11 +120,18 @@
         (values res nil)))))
 
 
-;; TODO: docstring support
-(defmacro defcomb (name args body)
+(defmacro defcomb (name args arg1 &optional arg2)
   "allows for the definition of a recursive named
    parser"
+  (if (and arg2 (stringp arg1))
+    `(defcomb-nd ,name ,args ,arg2 ,arg1)
+    `(defcomb-nd ,name ,args, arg1)))
+
+
+(defmacro defcomb-nd (name args body &optional docstring)
+  "same as defcomb, but docstrings are not permitted"
   (let ((next (gensym)) (save (gensym)) (revert (gensym)))
     `(defun ,name ,args
+       ,docstring
        (lambda (,next ,save ,revert)
          (funcall ,body ,next ,save ,revert)))))
