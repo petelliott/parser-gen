@@ -4,6 +4,7 @@
   (:export
     #:str-lit
     #:strseq
+    #:int-literal
     #:identifier
     #:wspace
     #:sym
@@ -20,6 +21,14 @@
       (mapcar
         (lambda (ch) (comb:lit ch))
         (coerce str 'list)))))
+
+
+(comb:defcomb int-literal ()
+  (comb:capply
+    #'parse-integer
+    (util:strparser
+      (util:rep+
+        (digit)))))
 
 
 (comb:defcomb identifier ()

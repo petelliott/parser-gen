@@ -1,10 +1,14 @@
+(defpackage :calc
+  (:use :cl)
+  (:export
+    #:expression))
 
-
+(in-package :calc)
 
 (pgen:rule expression
-  (|| plus-expr
-     minus-expr
-     term))
+  (any plus-expr
+       minus-expr
+       term))
 
 (pgen:rule plus-expr
   (term "+" expression)
@@ -19,9 +23,9 @@
 
 
 (pgen:rule term
-  (|| times-term
-     div-term
-     factor))
+  (any times-term
+       div-term
+       factor))
 
 
 (pgen:rule times-term
@@ -37,26 +41,24 @@
 
 
 (pgen:rule factor
-  (|| parens
-     int-lit))
+  (any parens
+       int-lit
+       unary-neg))
+
+(pgen:rule unary-neg
+  ("-" factor)
+  (lambda (res)
+    (- (second res))))
 
 (pgen:rule parens
   (misc:wspace "(" expression ")" misc:wspace)
   (lambda (res)
-    (third expression)))
+    (third res)))
+
 
 (pgen:rule int-lit
-  (misc:wspace
-   (|| (misc:digit int-lit) misc:digit)
-   misc:wspace)
+  (misc:wspace misc:int-literal misc:wspace)
   (lambda (res)
-    (int-parse (second res))))
+    (second res)))
 
-
-(defun int-parse (lit &optional (res 0))
-  (if (listp lit)
-    (int-parse
-      (cdr lit)
-      (+ (* res 10) (car lit)))
-    (car lit)))
 

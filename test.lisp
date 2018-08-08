@@ -2,6 +2,8 @@
 (load "input")
 (load "util")
 (load "misc")
+(load "parser-gen")
+(load "calc.lisp")
 
 
 (defgeneric test-parse (comb obj))
