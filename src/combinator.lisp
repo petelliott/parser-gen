@@ -64,11 +64,9 @@
     (let ((backup (funcall save)))
       (multiple-value-bind (res stat)
           (seq-int combs next save revert)
-        (if stat
-          (values res stat)
-          (progn
-            (funcall revert backup)
-            (values res stat)))))))
+        (progn
+          (if (not stat) (funcall revert backup))
+          (values res stat))))))
 
 
 (defun seq-int (combs next save revert)
@@ -85,12 +83,12 @@
     (values nil t)))
 
 
-(defun lit (ch)
+(defun lit (tok)
   "returns a parser that accepts a matching literal"
   (lambda (next save revert)
     (let ((backup (funcall save)))
-      (if (equal ch (funcall next))
-        (values ch t)
+      (if (equal tok (funcall next))
+        (values tok t)
         (progn
           (funcall revert backup)
           (values nil nil))))))
