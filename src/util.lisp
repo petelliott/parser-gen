@@ -1,3 +1,4 @@
+;;;; a collection of useful non-leaf combinators
 (defpackage :util
   (:use :cl)
   (:export

@@ -1,4 +1,4 @@
-;;; a collection of prebuilt utilities
+;;;; some useful leaf combinators
 (defpackage :misc
   (:use :cl)
   (:export

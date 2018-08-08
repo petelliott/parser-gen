@@ -1,3 +1,5 @@
+;;;; defines the rule macro, useful for
+;;;; easy writing of parsers/interpreters
 (defpackage :pgen
   (:use :cl)
   (:export
@@ -9,6 +11,8 @@
 
 
 (defmacro rule (name syntax &optional transform)
+  "macro to define a named combinator with shortform
+   syntax, and optionally a transformation"
   `(comb:defcomb ,name ()
      ,(if transform
         `(comb:capply
@@ -16,6 +20,19 @@
            ,(shortform syntax))
         (shortform syntax))))
 
+;; shortform is a simple way of writing combinators of
+;; sequences, choices, and leaf combinators.
+;;
+;; shortform ::= (any shortform*)
+;;             | (shortform*)
+;;             | string
+;;
+;; example: (any (misc:alpha "b") misc:digit)
+;;      --> (comb:any
+;;            (comb:seq
+;;              (misc:alpha)
+;;              (mist:strseq "b")
+;;            (misc:digit)))
 
 (defun shortform (sf)
   "generates the combinator expression from the shorform"

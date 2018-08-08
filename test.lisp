@@ -1,8 +1,8 @@
-(load "combinator")
-(load "input")
-(load "util")
-(load "misc")
-(load "parser-gen")
+
+(pushnew (truename ".") ql:*local-project-directories* )
+(ql:register-local-projects)
+(ql:quickload :parser-gen)
+
 (load "calc.lisp")
 
 

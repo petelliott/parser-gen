@@ -1,3 +1,5 @@
+;;;; functions that generate the next, save, revert triples
+;;;; used by parsers.
 (defpackage :input
   (:use :cl)
   (:export
