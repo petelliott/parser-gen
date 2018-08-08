@@ -2,6 +2,7 @@
 (defpackage :misc
   (:use :cl)
   (:export
+    #:test
     #:str-lit
     #:strseq
     #:int-literal
@@ -16,6 +17,7 @@
 
 
 (comb:defcomb strseq (str)
+  "parses a string that matches str"
   (util:strparser
     (comb:seql
       (mapcar
@@ -24,6 +26,7 @@
 
 
 (comb:defcomb int-literal ()
+  "parses an integer literal"
   (comb:capply
     #'parse-integer
     (util:strparser
@@ -31,13 +34,16 @@
         (digit)))))
 
 
+;;TODO: support common lisp or c style identifiers only
 (comb:defcomb identifier ()
+  "parses an alphanumeric identifier"
   (util:strparser
     (util:rep+
       (alphanum))))
 
 
 (comb:defcomb wspace ()
+  "parses any whitespace, including none"
   (util:rep*
     (comb:any
       (comb:lit #\ )
@@ -47,6 +53,7 @@
 
 
 (comb:defcomb sym ()
+  "matches any ascii symbol"
   (comb:any
    (comb:lit #\!)
    (comb:lit #\")
@@ -83,10 +90,12 @@
 
 
 (comb:defcomb alphanum ()
+  "matches any latin character or digit"
   (comb:any (alpha) (digit)))
 
 
 (comb:defcomb digit ()
+  "matches any ascii character"
   (comb:any
     (comb:lit #\0)
     (comb:lit #\1)
@@ -101,6 +110,7 @@
 
 
 (comb:defcomb alpha ()
+  "matches any ascii latin character, upper or lower case"
   (comb:any
     (comb:lit #\a)
     (comb:lit #\b)
