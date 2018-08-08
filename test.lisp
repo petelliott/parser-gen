@@ -6,6 +6,7 @@
 
 (defgeneric test-parse (comb obj))
 
+
 (defmethod test-parse (comb (str string))
   (multiple-value-call comb (input:str-in str)))
 

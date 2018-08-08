@@ -34,9 +34,6 @@
 
 
 (comb:defcomb rep* (parser)
-  (linearize
-    (comb:any
-      (comb:seq
-        parser
-        (rep* parser))
-      (comb:cnull))))
+  (comb:any
+    (rep+ parser)
+    (comb:cnull)))

@@ -86,11 +86,11 @@
 
 (defun capply (fun combinator)
   (lambda (next save revert)
-    (multiple-value-bind (res stat ign)
+    (multiple-value-bind (res stat)
         (funcall combinator next save revert)
       (if stat
-        (values (funcall fun res) t ign)
-        (values res nil ign)))))
+        (values (funcall fun res) t)
+        (values res nil)))))
 
 
 ;; TODO: docstring
