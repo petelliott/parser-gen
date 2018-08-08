@@ -21,10 +21,11 @@
         (shortform syntax))))
 
 ;; shortform is a simple way of writing combinators of
-;; sequences, choices, and leaf combinators.
+;; sequences, choices, argumentless combinators
 ;;
 ;; shortform ::= (any shortform*)
 ;;             | (shortform*)
+;;             | symbol
 ;;             | string
 ;;
 ;; example: (any (misc:alpha "b") misc:digit)
