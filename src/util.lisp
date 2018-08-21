@@ -5,7 +5,10 @@
     #:strparser
     #:linearize
     #:rep*
-    #:rep+))
+    #:rep+
+    #:exactly
+    #:upto
+    #:repn))
 
 (in-package :util)
 
@@ -38,3 +41,39 @@
   (comb:any
     (rep+ parser)
     (comb:cnull)))
+
+
+(comb:defcomb exactly (n parser)
+  "match exaxtly n of parser"
+  (cond
+    ((= n 0) (comb:cnull))
+    ((= n 1) (comb:capply #'list parser))
+    (t
+      (linearize
+        (comb:seq
+          parser
+          (exactly (1- n) parser))))))
+
+
+(comb:defcomb upto (n parser)
+  "match 0 to n of parser"
+  (if (= n 0)
+    (comb:cnull)
+      (comb:any
+        (linearize
+          (comb:seq
+            parser
+            (upto (1- n) parser)))
+        (comb:cnull))))
+
+
+(comb:defcomb repn (lo hi parser)
+  "match lo to hi of parser inclusive nil=inf"
+  (comb:capply
+    (lambda (lst)
+      (append (first lst) (second lst)))
+    (comb:seq
+      (exactly lo parser)
+      (if (null hi)
+        (rep* parser)
+        (upto (- hi lo) parser)))))
